@@ -1,15 +1,24 @@
-#!/Users/vibhamasti/anaconda3/bin/python
 
+# Problem statement 12 - using tkinter and simpleaudio
+
+# For the GUI
 from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
-import time
 
+# To ring the alarm at system time
+from datetime import datetime
+
+# For timezones
+import pytz
+
+# For the alarm sound
 import simpleaudio as sa
 
-# TODO: make gui pretty
-# TODO: comment
+IST = pytz.timezone('Asia/Kolkata')
 
+
+# Class for the alarm clock
 class AlarmClock():
     def __init__(self):
         # Initialise audio
@@ -73,41 +82,46 @@ class AlarmClock():
         # Alarm list frame
         self.alarm_frame = Frame(self.canvas)
 
-
+        # Create a window for scrolling
         self.canvas.create_window(0,0,window=self.alarm_frame, anchor='nw')
 
         # List of all alarms
         self.listbox = Listbox(self.alarm_frame)
         self.listbox.pack()
         
+        # Add alarms to the scrollable list
         for alarm in self.alarms:
             self.listbox.insert(END, alarm)
 
         # Attach listbox to scrollbar
         self.listbox.config(yscrollcommand=self.scrollbar.set)
         
-        # Check if alarm should be rung
+        # Check if alarm should be rung after 1 second
         self.master.after(1000, self.check_alarm)
 
 
     # Check if alarm should be rung
     def check_alarm(self):
-        now = time.strftime('%H:%M')
-        now_s = int(time.strftime('%S'))
+        datetime_ist = datetime.now(IST)
 
-        # Go through all the alarms saved
+        now = datetime_ist.strftime('%H:%M')
+        now_s = int(datetime_ist.strftime('%S'))
+
+
+        # Go through all the alarms saved in the list of alarms
         for alarm in self.alarms:
-            # If an alarm is saved for the current time
+            # If an alarm is saved for the current time (alarm to be rung)
             if now == alarm:
-                # Message box pop-up with alarm sound
+                # Message box pop-ups with alarm sound
                 play_obj = self.wav_obj.play()
                 messagebox.showinfo('ALARM', 'ALARM at {}!!!!!!!!!!!!!'.format(now))
                 play_obj.stop()
 
-                # Check for alarm in the next minute
+                # Check for alarm in the next minute (calls the function)
                 self.master.after((60-now_s)*1000, self.check_alarm)
                 return
 
+        # Check every second
         self.master.after(1000, self.check_alarm)
 
 
@@ -115,29 +129,40 @@ class AlarmClock():
     def add_alarm(self):
         file = open('alarms.txt', 'w')
 
-        # Add a 0 before single-digit times
+        # Add a 0 before single-digit hours
         time_h = str(self.h.get())
         if len(time_h) == 1:
             time_h = '0' + time_h
+
+        # Add a 0 before single-digit minutes
         time_m = str(self.m.get())
         if len(time_m) == 1:
             time_m = '0' + time_m
 
+        # Form the time string in hh:mm format
         time_str = time_h+':'+time_m
 
+        # If the alarm already exists, do not duplicate it
         if time_str in self.alarms:
             return
 
+        # Append the newly-entered alarm to the list of alarms
+        # in chronological order
         self.alarms.append(time_str)
         self.alarms.sort()
+
+        # Append the newly-entered alarm to the alarm text file
+        # of alarms (alarms.txt)
         for alarm in self.alarms:
             file.write(alarm + '\n')
 
-        # Update list of all alarms
+        # Update the scrollable list of all alarms in the GUI
+        # by deleting the entire list and reprinting it
         self.listbox.delete(0, END)
         for alarm in self.alarms:
             self.listbox.insert(END, alarm)
         
+        # Close the file
         file.close()
 
     # Start the alarm clock loop
@@ -145,5 +170,8 @@ class AlarmClock():
         self.master.mainloop()
 
     
+# Define an AlarmClock object
 clk = AlarmClock()
+
+# Start the clock
 clk.start()
