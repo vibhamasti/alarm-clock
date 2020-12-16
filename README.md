@@ -29,4 +29,3 @@ A simple tkinter-based alarm clock program.
 ## Execution
 
 Run `python alarm_clock.py`
-
