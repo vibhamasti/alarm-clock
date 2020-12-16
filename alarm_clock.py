@@ -102,16 +102,11 @@ class AlarmClock():
 
     # Check if alarm should be rung
     def check_alarm(self):
-<<<<<<< HEAD
         datetime_ist = datetime.now(IST)
 
         now = datetime_ist.strftime('%H:%M')
         now_s = int(datetime_ist.strftime('%S'))
 
-=======
-        now = time.strftime('%H:%M')
-        now_s = int(time.strftime('%S'))
->>>>>>> 02d4236a3b72bd3294ff1d6006b0fd83db8dc61b
 
         # Go through all the alarms saved in the list of alarms
         for alarm in self.alarms:
