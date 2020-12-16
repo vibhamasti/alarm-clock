@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+#!/Users/vibhamasti/anaconda3/bin/python
+>>>>>>> 02d4236a3b72bd3294ff1d6006b0fd83db8dc61b
 
 # Problem statement 12 - using tkinter and simpleaudio
 
@@ -7,16 +11,23 @@ from tkinter import ttk
 from tkinter import messagebox
 
 # To ring the alarm at system time
+<<<<<<< HEAD
 from datetime import datetime
 
 # For timezones
 import pytz
+=======
+import time
+>>>>>>> 02d4236a3b72bd3294ff1d6006b0fd83db8dc61b
 
 # For the alarm sound
 import simpleaudio as sa
 
+<<<<<<< HEAD
 IST = pytz.timezone('Asia/Kolkata')
 
+=======
+>>>>>>> 02d4236a3b72bd3294ff1d6006b0fd83db8dc61b
 
 # Class for the alarm clock
 class AlarmClock():
@@ -102,11 +113,16 @@ class AlarmClock():
 
     # Check if alarm should be rung
     def check_alarm(self):
+<<<<<<< HEAD
         datetime_ist = datetime.now(IST)
 
         now = datetime_ist.strftime('%H:%M')
         now_s = int(datetime_ist.strftime('%S'))
 
+=======
+        now = time.strftime('%H:%M')
+        now_s = int(time.strftime('%S'))
+>>>>>>> 02d4236a3b72bd3294ff1d6006b0fd83db8dc61b
 
         # Go through all the alarms saved in the list of alarms
         for alarm in self.alarms:
